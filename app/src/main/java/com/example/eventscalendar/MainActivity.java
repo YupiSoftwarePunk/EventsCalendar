@@ -22,6 +22,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // проект по мобильным приложениям
+        // проект по мобильным приложениям....
     }
 }
