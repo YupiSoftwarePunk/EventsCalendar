@@ -7,9 +7,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.eventscalendar.MainActivity;
 import com.example.eventscalendar.R;
+import com.example.eventscalendar.MainActivity;
+
 
 public class FirstActivity extends AppCompatActivity {
 
@@ -77,5 +77,7 @@ public class FirstActivity extends AppCompatActivity {
     private void registerUser(String login, String password) {
         Toast.makeText(this, "Регистрация прошла успешно", Toast.LENGTH_SHORT).show();
         loginUser(login, password);
+        startActivity(new Intent(FirstActivity.this, MainActivity.class));
+        finish();
     }
 }
