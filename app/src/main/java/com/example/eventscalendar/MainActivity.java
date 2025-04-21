@@ -4,6 +4,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.eventscalendar.R;
 
@@ -32,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, new EventListFragment());
+        transaction.commit();
     }
 
     private void searchEvents(String theme) {
