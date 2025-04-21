@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         etEventTheme = findViewById(R.id.etEventTheme);
         btnSearchEvents = findViewById(R.id.btnSearchEvents);
 
+
         btnSearchEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

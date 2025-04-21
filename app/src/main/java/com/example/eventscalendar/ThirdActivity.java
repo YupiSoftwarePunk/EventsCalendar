@@ -7,16 +7,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.eventscalendar.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-public class EventListFragment extends Fragment {
+public class ThirdActivity extends Fragment {
 
     private LinearLayout eventsContainer;
     private TextView nextPageTextView;
@@ -80,14 +85,25 @@ public class EventListFragment extends Fragment {
     }
 
     private void addEventToCalendar(Event event) {
-        // Реализовать добавление события в календарь
-        // Использовать CalendarContract для добавления событий в системный календарь
-        // Или создать свой календарь в приложении
+        // Создаем новое событие для календаря
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
+        String eventDate = sdf.format(new Date(System.currentTimeMillis() + 86400000)); // Дата через день
 
-        // Временное уведомление
-        if (getContext() != null) {
-            Toast.makeText(getContext(), "Добавлено в календарь: " + event.getName(), Toast.LENGTH_SHORT).show();
+        CalendarEventsFragment.CalendarEvent calendarEvent =
+                new CalendarEventsFragment.CalendarEvent(
+                        event.getName(),
+                        eventDate,
+                        "Место не указано",
+                        event.getUrl()
+                );
+
+        // Здесь должна быть логика сохранения в базу данных
+        // Временно сохраняем в списке
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).addToCalendar(calendarEvent);
         }
+
+        Toast.makeText(getContext(), "Добавлено в календарь: " + event.getName(), Toast.LENGTH_SHORT).show();
     }
 
     private static class Event {
