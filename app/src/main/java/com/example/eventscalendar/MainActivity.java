@@ -1,3 +1,6 @@
+package com.example.eventscalendar;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText etEventTheme;
     private Button btnSearchEvents;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +48,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void searchEvents(String theme) {
-        //  Реализовать парсинг событий по теме с различных сайтов
+        //  Реализовать парсинг событий по теме с Timepad
         Toast.makeText(this, "Поиск событий по теме: " + theme, Toast.LENGTH_SHORT).show();
+    }
+
+    public void addToCalendar(CalendarEventsFragment.CalendarEvent calendarEvent) {
+
     }
 }

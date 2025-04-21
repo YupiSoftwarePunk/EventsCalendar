@@ -1,3 +1,5 @@
+package com.example.eventscalendar;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,15 +31,13 @@ public class CalendarEventsFragment extends Fragment {
         View view = inflater.inflate(R.layout.calendar_events_fragment, container, false);
         eventsContainer = view.findViewById(R.id.eventsContainer);
 
-        // Загружаем события (в реальном приложении - из базы данных)
         loadEvents();
 
         return view;
     }
 
     private void loadEvents() {
-        // Здесь должна быть загрузка из базы данных или SharedPreferences
-        // Это временные тестовые данные
+        // Здесь должна быть загрузка из API
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
 
         events.add(new CalendarEvent(
@@ -78,10 +78,9 @@ public class CalendarEventsFragment extends Fragment {
         date.setText("Дата: " + event.getDate());
         location.setText("Место: " + event.getLocation());
 
-        // Клик по названию - открываем ссылку
+
         title.setOnClickListener(v -> {
             if (getContext() != null) {
-                // Открываем ссылку в браузере
                 android.content.Intent browserIntent =
                         new android.content.Intent(android.content.Intent.ACTION_VIEW,
                                 android.net.Uri.parse(event.getUrl()));
@@ -89,17 +88,15 @@ public class CalendarEventsFragment extends Fragment {
             }
         });
 
-        // Удаление события
+
         removeButton.setOnClickListener(v -> {
             events.remove(event);
             updateUI();
-            // Здесь должна быть логика удаления из базы данных
         });
 
         eventsContainer.addView(eventView);
     }
 
-    // Модель события в календаре
     public static class CalendarEvent {
         private String title;
         private String date;

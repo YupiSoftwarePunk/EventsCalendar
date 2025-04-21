@@ -1,3 +1,5 @@
+package com.example.eventscalendar;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,7 +39,7 @@ public class ThirdActivity extends Fragment {
         // Заполняем список событий из API
         populateEvents();
 
-        // Обработка клика на "Следующая страница"
+
         nextPageTextView.setOnClickListener(v -> {
             //Реализовать переход на следующую страницу
         });
@@ -46,6 +48,7 @@ public class ThirdActivity extends Fragment {
     }
 
     private void populateEvents() {
+        // пока так
         List<Event> events = new ArrayList<>();
         events.add(new Event("Концерт группы 'Кино'", "https://example.com/event1"));
         events.add(new Event("Выставка 'Импрессионисты'", "https://example.com/event2"));
@@ -96,8 +99,7 @@ public class ThirdActivity extends Fragment {
                         "Место не указано",
                         event.getUrl()
                 );
-
-        // Здесь должна быть логика сохранения в базу данных
+        
         // Временно сохраняем в списке
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).addToCalendar(calendarEvent);
