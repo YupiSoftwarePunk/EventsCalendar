@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, new EventListFragment());
+        transaction.replace(R.id.eventsContainer, new EventListFragment());
         transaction.commit();
     }
 
