@@ -11,7 +11,7 @@
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Список событий по выбранной теме"
+        android:text="@string/title"
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -33,7 +33,7 @@
         android:id="@+id/nextPageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Следующая страница"
+        android:text="@string/nextpage"
         android:textColor="@android:color/holo_blue_dark"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"/>

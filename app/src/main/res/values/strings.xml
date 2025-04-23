@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">EventsCalendar</string>
+    <string name="password">Пароль</string>
+    <string name="login">Логин или email</string>
+    <string name="events">Календарь событий</string>
+    <string name="enter">Вход</string>
+    <string name="login2">Логин или email</string>
+    <string name="password2">Пароль</string>
+    <string name="enter2">Войти</string>
+    <string name="signin">Регистрация</string>
+    <string name="signin2">Зарегистрироваться</string>
+    <string name="add">Добавить</string>
+    <string name="title">Список событий по выбранной теме</string>
+    <string name="nextpage">Следующая страница</string>
+    <string name="myevents">Мои события в календаре</string>
 </resources>

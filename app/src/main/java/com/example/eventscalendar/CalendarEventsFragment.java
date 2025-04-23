@@ -28,7 +28,7 @@ public class CalendarEventsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.calendar_events_fragment, container, false);
+        View view = inflater.inflate(R.layout.event_list_fragment, container, false);
         eventsContainer = view.findViewById(R.id.eventsContainer);
 
         loadEvents();
@@ -67,33 +67,33 @@ public class CalendarEventsFragment extends Fragment {
 
     private void addEventToView(CalendarEvent event) {
         View eventView = LayoutInflater.from(getContext())
-                .inflate(R.layout.calendar_event_item, eventsContainer, false);
-
-        TextView title = eventView.findViewById(R.id.eventTitle);
-        TextView date = eventView.findViewById(R.id.eventDate);
-        TextView location = eventView.findViewById(R.id.eventLocation);
-        Button removeButton = eventView.findViewById(R.id.removeButton);
-
-        title.setText(event.getTitle());
-        date.setText("Дата: " + event.getDate());
-        location.setText("Место: " + event.getLocation());
-
-
-        title.setOnClickListener(v -> {
-            if (getContext() != null) {
-                android.content.Intent browserIntent =
-                        new android.content.Intent(android.content.Intent.ACTION_VIEW,
-                                android.net.Uri.parse(event.getUrl()));
-                startActivity(browserIntent);
-            }
-        });
-
-
-        removeButton.setOnClickListener(v -> {
-            events.remove(event);
-            updateUI();
-        });
-
+                .inflate(R.layout.event_item_layout, eventsContainer, false);
+//
+//        TextView title = eventView.findViewById(R.id.eventTitle);
+//        TextView date = eventView.findViewById(R.id.eventDate);
+//        TextView location = eventView.findViewById(R.id.eventLocation);
+//        Button removeButton = eventView.findViewById(R.id.removeButton);
+//
+//        title.setText(event.getTitle());
+//        date.setText("Дата: " + event.getDate());
+//        location.setText("Место: " + event.getLocation());
+//
+//
+//        title.setOnClickListener(v -> {
+//            if (getContext() != null) {
+//                android.content.Intent browserIntent =
+//                        new android.content.Intent(android.content.Intent.ACTION_VIEW,
+//                                android.net.Uri.parse(event.getUrl()));
+//                startActivity(browserIntent);
+//            }
+//        });
+//
+//
+//        removeButton.setOnClickListener(v -> {
+//            events.remove(event);
+//            updateUI();
+//        });
+//
         eventsContainer.addView(eventView);
     }
 

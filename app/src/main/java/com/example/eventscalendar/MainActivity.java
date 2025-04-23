@@ -27,23 +27,23 @@ public class MainActivity extends AppCompatActivity {
         btnSearchEvents = findViewById(R.id.btnSearchEvents);
 
 
-        btnSearchEvents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String theme = etEventTheme.getText().toString().trim();
-
-                if (theme.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Введите тему события", Toast.LENGTH_SHORT).show();
-                } else {
-                    searchEvents(theme);
-                }
-            }
-        });
+//        btnSearchEvents.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String theme = etEventTheme.getText().toString().trim();
+//
+//                if (theme.isEmpty()) {
+//                    Toast.makeText(MainActivity.this, "Введите тему события", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    searchEvents(theme);
+//                }
+//            }
+//        });
 
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.eventsContainer, new EventListFragment());
+        // transaction.replace(R.id.eventsContainer, new EventListFragment());
         transaction.commit();
     }
 
