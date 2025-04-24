@@ -80,33 +80,33 @@ public class ThirdActivity extends Fragment {
             startActivity(browserIntent);
         });
 
-        addToCalendarButton.setOnClickListener(v -> {
-            addEventToCalendar(event);
-        });
+//        addToCalendarButton.setOnClickListener(v -> {
+//            addEventToCalendar(event);
+//        });
 
         container.addView(eventView);
     }
 
-    private void addEventToCalendar(Event event) {
-        // Создаем новое событие для календаря
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
-        String eventDate = sdf.format(new Date(System.currentTimeMillis() + 86400000)); // Дата через день
-
-        CalendarEventsFragment.CalendarEvent calendarEvent =
-                new CalendarEventsFragment.CalendarEvent(
-                        event.getName(),
-                        eventDate,
-                        "Место не указано",
-                        event.getUrl()
-                );
-        
-        // Временно сохраняем в списке
-        if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).addToCalendar(calendarEvent);
-        }
-
-        Toast.makeText(getContext(), "Добавлено в календарь: " + event.getName(), Toast.LENGTH_SHORT).show();
-    }
+//    private void addEventToCalendar(Event event) {
+//        // Создаем новое событие для календаря
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
+//        String eventDate = sdf.format(new Date(System.currentTimeMillis() + 86400000)); // Дата через день
+//
+//        CalendarEventsFragment.CalendarEvent calendarEvent =
+//                new CalendarEventsFragment.CalendarEvent(
+//                        event.getName(),
+//                        eventDate,
+//                        "Место не указано",
+//                        event.getUrl()
+//                );
+//
+//        // Временно сохраняем в списке
+//        if (getActivity() instanceof MainActivity) {
+//            ((MainActivity) getActivity()).addToCalendar(calendarEvent);
+//        }
+//
+//        Toast.makeText(getContext(), "Добавлено в календарь: " + event.getName(), Toast.LENGTH_SHORT).show();
+//    }
 
     private static class Event {
         private String name;

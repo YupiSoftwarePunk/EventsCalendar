@@ -1,36 +1,72 @@
 package com.example.eventscalendar;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.eventscalendar.R;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText etEventTheme;
-    private Button btnSearchEvents;
+    private EditText etLogin, etPassword;
+    private Button btnLogin, btnRegister;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        etEventTheme = findViewById(R.id.etEventTheme);
-        btnSearchEvents = findViewById(R.id.btnSearchEvents);
+        etLogin = findViewById(R.id.etLogin);
+        etPassword = findViewById(R.id.etPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnRegister = findViewById(R.id.btnRegister);
 
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String login = etLogin.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+
+                if (login.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+                } else {
+                    loginUser(login, password);
+                }
+            }
+        });
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String login = etLogin.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+
+                if (login.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+                } else {
+                    registerUser(login, password);
+                }
+            }
+        });
     }
 
+    private void loginUser(String login, String password) {
+        if (login.equals("user") && password.equals("1234")) {
+            Toast.makeText(this, "Вход выполнен успешно", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, SecondActivity.class));
 
-    public void addToCalendar(CalendarEventsFragment.CalendarEvent calendarEvent) {
+            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private void registerUser(String login, String password) {
+        Toast.makeText(this, "Регистрация прошла успешно", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MainActivity.this, SecondActivity.class));
     }
 }
-
