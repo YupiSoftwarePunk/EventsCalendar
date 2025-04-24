@@ -17,7 +17,7 @@ public class FirstActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.first_activity);
+        setContentView(R.layout.activity_main);
 
 
         etLogin = findViewById(R.id.etLogin);
@@ -35,7 +35,7 @@ public class FirstActivity extends AppCompatActivity {
                 if (login.isEmpty() || password.isEmpty()) {
                     Toast.makeText(FirstActivity.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
                 } else {
-                    String enterLogin = "coolCode@gmail.com";
+                    String enterLogin = "user";
                     String enterPassword = "1234";
                     if (login == enterLogin && password == enterPassword) {
 
@@ -62,7 +62,7 @@ public class FirstActivity extends AppCompatActivity {
     }
 
     private void loginUser(String login, String password) {
-        if (login.equals("test@example.com") && password.equals("123456")) {
+        if (login.equals("user") && password.equals("1234")) {
             Toast.makeText(this, "Вход выполнен успешно", Toast.LENGTH_SHORT).show();
 
             startActivity(new Intent(FirstActivity.this, MainActivity.class));
@@ -77,5 +77,7 @@ public class FirstActivity extends AppCompatActivity {
         loginUser(login, password);
         startActivity(new Intent(FirstActivity.this, MainActivity.class));
         finish();
+
+//        startActivity(this, new Intent(this, SecondActivity.class));     // тут пофиксить нужно когда SecondActivity будет готов
     }
 }
