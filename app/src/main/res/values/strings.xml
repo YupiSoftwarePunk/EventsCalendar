@@ -13,4 +13,11 @@
     <string name="title">Список событий по выбранной теме</string>
     <string name="nextpage">Следующая страница</string>
     <string name="myevents">Мои события в календаре</string>
+    <string name="calendar">Календарь событий</string>
+    <string name="enter3">Вход</string>
+    <string name="login_email">Логин или email</string>
+    <string name="passwrd">Пароль</string>
+    <string name="enter4">Войти</string>
+    <string name="registr">Регистрация</string>
+    <string name="registr_btn">Зарегистрироваться</string>
 </resources>
