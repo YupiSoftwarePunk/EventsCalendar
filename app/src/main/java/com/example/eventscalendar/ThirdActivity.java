@@ -2,11 +2,11 @@ package com.example.eventscalendar;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,18 +15,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.eventscalendar.R;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import java.util.List;
-import java.util.Locale;
 
 public class ThirdActivity extends Fragment {
 
     private LinearLayout eventsContainer;
     private TextView nextPageTextView;
+    private String theme = "Концерты"; // Пример темы для парсинга
 
     @Nullable
     @Override
@@ -36,93 +39,88 @@ public class ThirdActivity extends Fragment {
         eventsContainer = view.findViewById(R.id.eventsContainer);
         nextPageTextView = view.findViewById(R.id.nextPageTextView);
 
-        // Заполняем список событий из API
-        populateEvents();
-
+        // Запускаем парсинг
+        fetchEventsFromTimepad(theme);
 
         nextPageTextView.setOnClickListener(v -> {
-            //Реализовать переход на следующую страницу
+            Toast.makeText(getContext(), "Переход на следующую страницу", Toast.LENGTH_SHORT).show();
+            // Здесь можно реализовать переход на новую активность
         });
 
         return view;
     }
 
-    private void populateEvents() {
-        // пока так
-        List<Event> events = new ArrayList<>();
-        events.add(new Event("Концерт группы 'Кино'", "https://example.com/event1"));
-        events.add(new Event("Выставка 'Импрессионисты'", "https://example.com/event2"));
-        events.add(new Event("Матч 'Спартак' - 'Зенит'", "https://example.com/event3"));
-        events.add(new Event("Фестиваль 'Круг света'", "https://example.com/event4"));
-        events.add(new Event("Спектакль 'Чайка'", "https://example.com/event5"));
-        events.add(new Event("Конференция 'Mobile Dev'", "https://example.com/event6"));
+    private void fetchEventsFromTimepad(String query) {
+        String apiUrl = "https://api.timepad.ru/v1/events?fields=name,description,starts_at,location&limit=10&skip=0&keywords=" + query;
 
-        eventsContainer.removeAllViews();
+        new FetchEventsTask().execute(apiUrl);
+    }
 
-        for (Event event : events) {
-            addEventView(event, eventsContainer);
+    private class FetchEventsTask extends AsyncTask<String, Void, JSONArray> {
+
+        @Override
+        protected JSONArray doInBackground(String... urls) {
+            try {
+                URL url = new URL(urls[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                reader.close();
+                connection.disconnect();
+
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                return jsonResponse.getJSONArray("values");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray events) {
+            if (events == null) {
+                Toast.makeText(getContext(), "Ошибка при загрузке событий", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            for (int i = 0; i < events.length(); i++) {
+                try {
+                    JSONObject event = events.getJSONObject(i);
+                    String name = event.getString("name");
+                    String url = event.getString("url");
+                    String date = event.getString("starts_at");
+
+                    addEventView(name, date, url);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    private void addEventView(Event event, LinearLayout container) {
-        // Создаем разметку для одного события
+    private void addEventView(String name, String date, String url) {
         View eventView = LayoutInflater.from(getContext())
-                .inflate(R.layout.event_item_layout, container, false);
+                .inflate(R.layout.event_item_layout, eventsContainer, false);
 
         TextView eventNameTextView = eventView.findViewById(R.id.eventNameTextView);
-        Button addToCalendarButton = eventView.findViewById(R.id.addToCalendarButton);
+        TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
 
-        eventNameTextView.setText(event.getName());
-        eventNameTextView.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+        eventNameTextView.setText(name);
+        eventDateTextView.setText("Дата: " + date);
 
         eventNameTextView.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.getUrl()));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(browserIntent);
         });
 
-//        addToCalendarButton.setOnClickListener(v -> {
-//            addEventToCalendar(event);
-//        });
-
-        container.addView(eventView);
-    }
-
-//    private void addEventToCalendar(Event event) {
-//        // Создаем новое событие для календаря
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault());
-//        String eventDate = sdf.format(new Date(System.currentTimeMillis() + 86400000)); // Дата через день
-//
-//        CalendarEventsFragment.CalendarEvent calendarEvent =
-//                new CalendarEventsFragment.CalendarEvent(
-//                        event.getName(),
-//                        eventDate,
-//                        "Место не указано",
-//                        event.getUrl()
-//                );
-//
-//        // Временно сохраняем в списке
-//        if (getActivity() instanceof MainActivity) {
-//            ((MainActivity) getActivity()).addToCalendar(calendarEvent);
-//        }
-//
-//        Toast.makeText(getContext(), "Добавлено в календарь: " + event.getName(), Toast.LENGTH_SHORT).show();
-//    }
-
-    private static class Event {
-        private String name;
-        private String url;
-
-        public Event(String name, String url) {
-            this.name = name;
-            this.url = url;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getUrl() {
-            return url;
-        }
+        eventsContainer.addView(eventView);
     }
 }
