@@ -26,38 +26,38 @@ public class Event {
         this.location = location;
     }
 
-    // Геттеры и сеттеры
-    public String getName() {
-        return name;
-    }
 
+    // setters
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getUrl() {
-        return url;
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+    public void setStartsAt(String startsAt) {
+        this.startsAt = startsAt;
     }
 
     public void setUrl(String url) {
         this.url = url;
     }
 
+
+    // getters
     public String getStartsAt() {
         return startsAt;
     }
-
-    public void setStartsAt(String startsAt) {
-        this.startsAt = startsAt;
-    }
-
     public Location getLocation() {
         return location;
     }
-
-    public void setLocation(Location location) {
-        this.location = location;
+    public String getName() {
+        return name;
     }
+    public String getUrl() {
+        return url;
+    }
+
+
 
     // Метод для сериализации объекта в JSON
     public String toJson() {
@@ -71,13 +71,13 @@ public class Event {
         return gson.fromJson(json, Event.class);
     }
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                ", startsAt='" + startsAt + '\'' +
-                ", location=" + location +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Event{" +
+//                "name='" + name + '\'' +
+//                ", url='" + url + '\'' +
+//                ", startsAt='" + startsAt + '\'' +
+//                ", location=" + location +
+//                '}';
+//    }
 }
