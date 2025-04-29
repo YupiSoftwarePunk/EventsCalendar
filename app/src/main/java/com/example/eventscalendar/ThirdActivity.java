@@ -111,10 +111,10 @@ public class ThirdActivity extends Fragment {
                 .inflate(R.layout.event_item_layout, eventsContainer, false);
 
         TextView eventNameTextView = eventView.findViewById(R.id.eventNameTextView);
-        TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
+//        TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
 
         eventNameTextView.setText(name);
-        eventDateTextView.setText("Дата: " + date);
+//        eventDateTextView.setText("Дата: " + date);
 
         eventNameTextView.setOnClickListener(v -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
