@@ -21,6 +21,10 @@ import java.util.Locale;
 
 public class CalendarEventsFragment extends Fragment {
 
+    // Здесь все нужно переписывать по нормальному и с настоящим парсингом из апи
+    // и выдачей в приложении
+
+
     private LinearLayout eventsContainer;
     private List<CalendarEvent> events = new ArrayList<>();
 
