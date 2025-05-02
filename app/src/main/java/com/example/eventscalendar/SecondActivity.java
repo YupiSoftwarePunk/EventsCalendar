@@ -3,7 +3,6 @@ package com.example.eventscalendar;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,9 +17,9 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import java.util.ArrayList;
 
 public class SecondActivity extends AppCompatActivity {
@@ -29,7 +28,7 @@ public class SecondActivity extends AppCompatActivity {
     private Button btnSearchEvents;
     private String selectedTheme;
 
-    private static final String API_URL = "https://api.timepad.ru/";
+    private static final String API_URL = "https://api.timepad.ru/v1/events";
     private static final String API_TOKEN = "cd82a3fd9055a688eff7bc85c87fdf0960fd646e";
 
     @Override
@@ -65,8 +64,8 @@ public class SecondActivity extends AppCompatActivity {
         });
 
         btnSearchEvents.setOnClickListener(v -> {
-            new FetchEventsTask().execute(selectedTheme);
             Toast.makeText(SecondActivity.this, "Поиск событий по теме: " + selectedTheme, Toast.LENGTH_SHORT).show();
+            new FetchEventsTask().execute(selectedTheme);
         });
     }
 
@@ -104,9 +103,16 @@ public class SecondActivity extends AppCompatActivity {
                     String name = obj.getString("name");
                     String urll = obj.getString("url");
                     String startsAt = obj.getString("starts_at");
-                    JSONObject locationObj = obj.getJSONObject("location");
-                    String city = locationObj.optString("city", "Город не указан");
-                    String address = locationObj.optString("address", "Адрес не указан");
+
+                    // Проверка наличия location
+                    JSONObject locationObj = obj.optJSONObject("location");
+                    String city = "Город не указан";
+                    String address = "Адрес не указан";
+
+                    if (locationObj != null) {
+                        city = locationObj.optString("city", "Город не указан");
+                        address = locationObj.optString("address", "Адрес не указан");
+                    }
 
                     events.add(new Event(name, urll, startsAt, city, address));
                 }
@@ -118,11 +124,11 @@ public class SecondActivity extends AppCompatActivity {
             return events;
         }
 
-//        @Override
-//        protected void onPostExecute(ArrayList<Event> events) {
-//            Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
-//            intent.putParcelableArrayListExtra("events_list",events);
-//            startActivity(intent);
-//        }
+        @Override
+        protected void onPostExecute(ArrayList<Event> events) {
+            Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
+            intent.putExtra("events_list", events);
+            startActivity(intent);
+        }
     }
 }

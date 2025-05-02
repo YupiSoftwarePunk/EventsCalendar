@@ -1,28 +1,12 @@
 package com.example.eventscalendar;
 
-import android.location.Location;
+import java.io.Serializable;
 
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
-
-public class Event {
-
-    @SerializedName("name")
+public class Event implements Serializable {
     private String name;
-
-    @SerializedName("url")
     private String url;
-
-    @SerializedName("starts_at")
     private String startsAt;
-
-    @SerializedName("location")
-    private Location location;
-
-    @SerializedName("city")
     private String city;
-
-    @SerializedName("address")
     private String address;
 
     public Event(String name, String url, String startsAt, String city, String address) {
@@ -33,58 +17,34 @@ public class Event {
         this.address = address;
     }
 
-
-    // setters
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-    public void setStartsAt(String startsAt) {
-        this.startsAt = startsAt;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-
-    // getters
-    public String getStartsAt() {
-        return startsAt;
-    }
-    public Location getLocation() {
-        return location;
-    }
     public String getName() {
         return name;
     }
+
     public String getUrl() {
         return url;
     }
 
-
-
-    // Метод для сериализации объекта в JSON
-    public String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
+    public String getStartsAt() {
+        return startsAt;
     }
 
-    // Метод для десериализации объекта из JSON
-    public static Event fromJson(String json) {
-        Gson gson = new Gson();
-        return gson.fromJson(json, Event.class);
+    public String getCity() {
+        return city;
     }
 
-//    @Override
-//    public String toString() {
-//        return "Event{" +
-//                "name='" + name + '\'' +
-//                ", url='" + url + '\'' +
-//                ", startsAt='" + startsAt + '\'' +
-//                ", location=" + location +
-//                '}';
-//    }
+    public String getAddress() {
+        return address;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", startsAt='" + startsAt + '\'' +
+                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
 }
