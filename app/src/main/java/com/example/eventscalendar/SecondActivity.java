@@ -29,7 +29,7 @@ public class SecondActivity extends AppCompatActivity {
     private Button btnSearchEvents;
     private String selectedTheme;
 
-    private static final String API_URL = "https://api.timepad.ru/v1/events";
+    private static final String API_URL = "https://api.timepad.ru/";
     private static final String API_TOKEN = "cd82a3fd9055a688eff7bc85c87fdf0960fd646e";
 
     @Override
