@@ -104,15 +104,9 @@ public class SecondActivity extends AppCompatActivity {
                     String urll = obj.getString("url");
                     String startsAt = obj.getString("starts_at");
 
-                    // Проверка наличия location
                     JSONObject locationObj = obj.optJSONObject("location");
-                    String city = "Город не указан";
-                    String address = "Адрес не указан";
-
-                    if (locationObj != null) {
-                        city = locationObj.optString("city", "Город не указан");
-                        address = locationObj.optString("address", "Адрес не указан");
-                    }
+                    String city = locationObj != null ? locationObj.optString("city", "Город не указан") : "Город не указан";
+                    String address = locationObj != null ? locationObj.optString("address", "Адрес не указан") : "Адрес не указан";
 
                     events.add(new Event(name, urll, startsAt, city, address));
                 }
