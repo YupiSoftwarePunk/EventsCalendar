@@ -19,11 +19,18 @@ public class Event {
     @SerializedName("location")
     private Location location;
 
-    public Event(String name, String url, String startsAt, Location location) {
+    @SerializedName("city")
+    private String city;
+
+    @SerializedName("address")
+    private String address;
+
+    public Event(String name, String url, String startsAt, String city, String address) {
         this.name = name;
         this.url = url;
         this.startsAt = startsAt;
-        this.location = location;
+        this.city = city;
+        this.address = address;
     }
 
 
