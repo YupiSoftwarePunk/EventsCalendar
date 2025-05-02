@@ -1,5 +1,6 @@
 package com.example.eventscalendar;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ public class ThirdActivity extends Fragment {
 
     private LinearLayout eventsContainer;
 
+    @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,10 +46,10 @@ public class ThirdActivity extends Fragment {
             View eventView = LayoutInflater.from(getContext()).inflate(R.layout.event_item_layout, eventsContainer, false);
 
             TextView eventNameTextView = eventView.findViewById(R.id.eventNameTextView);
-            TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
+            //TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
 
             eventNameTextView.setText(event.getName());
-            eventDateTextView.setText("Дата: " + event.getStartsAt());
+            //eventDateTextView.setText("Дата: " + event.getStartsAt());
 
             eventView.setOnClickListener(v -> {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.getUrl()));

@@ -1,5 +1,6 @@
 package com.example.eventscalendar;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class CalendarEventsFragment extends Fragment {
     private LinearLayout eventsContainer;
     private List<CalendarEvent> events = new ArrayList<>();
 
+    @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
