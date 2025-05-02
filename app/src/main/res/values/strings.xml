@@ -20,4 +20,8 @@
     <string name="enter4">Войти</string>
     <string name="registr">Регистрация</string>
     <string name="registr_btn">Зарегистрироваться</string>
+    <string name="chooseTheme">Выбрать тему события</string>
+    <string name="SearchEvents">Поиск событий</string>
+    <string name="MakeNotification">Создать напоминание</string>
+    <string name="NextPage">Перейти на следующую страницу</string>
 </resources>
