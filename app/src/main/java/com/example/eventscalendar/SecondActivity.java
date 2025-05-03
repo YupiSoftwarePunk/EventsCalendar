@@ -120,9 +120,13 @@ public class SecondActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<Event> events) {
-            Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
-            intent.putExtra("events_list", events);
-            startActivity(intent);
+            if (events != null && !events.isEmpty()) {
+                Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
+                intent.putExtra("events_list", events);
+                startActivity(intent);
+            } else {
+                Toast.makeText(SecondActivity.this, "События не найдены", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
