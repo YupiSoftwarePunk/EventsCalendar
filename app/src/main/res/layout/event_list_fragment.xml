@@ -24,4 +24,12 @@
         android:text="Дата события"
         android:textSize="14sp"
         android:layout_marginBottom="4dp"/>
+
+    <Button
+        android:id="@+id/btnAddToCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Добавить событие в календарь"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@android:color/holo_blue_light"/>
 </LinearLayout>

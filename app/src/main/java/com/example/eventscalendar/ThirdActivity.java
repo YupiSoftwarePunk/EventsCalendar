@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,14 +48,22 @@ public class ThirdActivity extends Fragment {
             View eventView = LayoutInflater.from(getContext()).inflate(R.layout.event_item_layout, eventsContainer, false);
 
             TextView eventNameTextView = eventView.findViewById(R.id.eventNameTextView);
-            //TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
+            TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
+            Button btnAddToCalendar = eventView.findViewById(R.id.btnAddToCalendar);
 
             eventNameTextView.setText(event.getName());
-            //eventDateTextView.setText("Дата: " + event.getStartsAt());
+            eventDateTextView.setText("Дата: " + event.getStartsAt());
 
+            // Открытие ссылки на событие
             eventView.setOnClickListener(v -> {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.getUrl()));
                 startActivity(browserIntent);
+            });
+
+            // Добавление события в сохраненный список
+            btnAddToCalendar.setOnClickListener(v -> {
+                events.add(event);
+                Toast.makeText(getContext(), "Добавлено в календарь: " + event.getName(), Toast.LENGTH_SHORT).show();
             });
 
             eventsContainer.addView(eventView);
