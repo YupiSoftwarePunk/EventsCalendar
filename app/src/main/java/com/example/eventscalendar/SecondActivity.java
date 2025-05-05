@@ -1,8 +1,9 @@
 package com.example.eventscalendar;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,8 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SecondActivity extends AppCompatActivity {
 
@@ -30,6 +33,9 @@ public class SecondActivity extends AppCompatActivity {
 
     private static final String API_URL = "https://api.timepad.ru/v1/events";
     private static final String API_TOKEN = "cd82a3fd9055a688eff7bc85c87fdf0960fd646e";
+
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +71,14 @@ public class SecondActivity extends AppCompatActivity {
 
         btnSearchEvents.setOnClickListener(v -> {
             Toast.makeText(SecondActivity.this, "Поиск событий по теме: " + selectedTheme, Toast.LENGTH_SHORT).show();
-            new FetchEventsTask().execute(selectedTheme);
+            fetchEvents(selectedTheme);
         });
     }
 
-    private class FetchEventsTask extends AsyncTask<String, Void, ArrayList<Event>> {
-
-        @Override
-        protected ArrayList<Event> doInBackground(String... themes) {
+    private void fetchEvents(String theme) {
+        executorService.execute(() -> {
             ArrayList<Event> events = new ArrayList<>();
-            String query = themes[0];
+            String query = theme;
 
             String urlString = API_URL + "?fields=name,url,starts_at,location&limit=10&keywords=" + query + "&city=Екатеринбург";
             try {
@@ -115,18 +119,17 @@ public class SecondActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            return events;
-        }
+            handler.post(() -> handleEventsResult(events));
+        });
+    }
 
-        @Override
-        protected void onPostExecute(ArrayList<Event> events) {
-            if (events != null && !events.isEmpty()) {
-                Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
-                intent.putExtra("events_list", events);
-                startActivity(intent);
-            } else {
-                Toast.makeText(SecondActivity.this, "События не найдены", Toast.LENGTH_SHORT).show();
-            }
+    private void handleEventsResult(ArrayList<Event> events) {
+        if (events != null && !events.isEmpty()) {
+            Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
+            intent.putExtra("events_list", events);
+            startActivity(intent);
+        } else {
+            Toast.makeText(SecondActivity.this, "События не найдены", Toast.LENGTH_SHORT).show();
         }
     }
 }
