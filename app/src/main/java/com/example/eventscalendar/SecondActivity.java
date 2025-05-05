@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,7 +32,7 @@ public class SecondActivity extends AppCompatActivity {
     private String selectedTheme;
 
     private static final String API_URL = "https://api.timepad.ru/v1/events";
-    private static final String API_TOKEN = "cd82a3fd9055a688eff7bc85c87fdf0960fd646e";
+    private static final String API_TOKEN = "Bearer cd82a3fd9055a688eff7bc85c87fdf0960fd646e";
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -59,7 +59,7 @@ public class SecondActivity extends AppCompatActivity {
 
         spinnerEventTheme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, android.view.View view, int position, long id) {
                 selectedTheme = eventThemes[position];
             }
 
@@ -85,13 +85,20 @@ public class SecondActivity extends AppCompatActivity {
                 URL url = new URL(urlString);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setRequestProperty("Authorization", "Bearer " + API_TOKEN);
+                connection.setRequestProperty("Authorization", API_TOKEN);
                 connection.setRequestProperty("Content-Type", "application/json");
+
+                // Проверка ответа сервера
+                int responseCode = connection.getResponseCode();
+                if (responseCode != HttpURLConnection.HTTP_OK) {
+                    Log.e("API_ERROR", "Ошибка запроса: " + responseCode);
+                    handler.post(() -> Toast.makeText(SecondActivity.this, "Ошибка сети: " + responseCode, Toast.LENGTH_SHORT).show());
+                    return;
+                }
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuilder response = new StringBuilder();
                 String line;
-
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
@@ -100,13 +107,21 @@ public class SecondActivity extends AppCompatActivity {
                 connection.disconnect();
 
                 JSONObject jsonResponse = new JSONObject(response.toString());
+
+                // Проверка на наличие "values"
+                if (!jsonResponse.has("values")) {
+                    Log.e("API_ERROR", "Ответ не содержит 'values'");
+                    handler.post(() -> Toast.makeText(SecondActivity.this, "Ошибка: данные не получены", Toast.LENGTH_SHORT).show());
+                    return;
+                }
+
                 JSONArray values = jsonResponse.getJSONArray("values");
 
                 for (int i = 0; i < values.length(); i++) {
                     JSONObject obj = values.getJSONObject(i);
-                    String name = obj.getString("name");
-                    String urll = obj.getString("url");
-                    String startsAt = obj.getString("starts_at");
+                    String name = obj.optString("name", "Без названия");
+                    String urll = obj.optString("url", "");
+                    String startsAt = obj.optString("starts_at", "Нет даты");
 
                     JSONObject locationObj = obj.optJSONObject("location");
                     String city = locationObj != null ? locationObj.optString("city", "Город не указан") : "Город не указан";
@@ -115,11 +130,12 @@ public class SecondActivity extends AppCompatActivity {
                     events.add(new Event(name, urll, startsAt, city, address));
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                handler.post(() -> handleEventsResult(events));
 
-            handler.post(() -> handleEventsResult(events));
+            } catch (Exception e) {
+                Log.e("API_ERROR", "Ошибка при запросе данных", e);
+                handler.post(() -> Toast.makeText(SecondActivity.this, "Ошибка сети", Toast.LENGTH_SHORT).show());
+            }
         });
     }
 
