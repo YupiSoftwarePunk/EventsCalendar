@@ -1,6 +1,5 @@
 package com.example.eventscalendar;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,24 +20,15 @@ import java.util.ArrayList;
 public class ThirdActivity extends Fragment {
 
     private LinearLayout eventsContainer;
-    private Button btnAddToCalendar;
-    private TextView eventNameTextView, eventDateTextView;
+    private ArrayList<Event> savedEvents = new ArrayList<>();
 
-    @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.event_list_fragment, container, false);
         eventsContainer = view.findViewById(R.id.eventsContainer);
 
-
-        eventNameTextView = view.findViewById(R.id.eventNameTextView);
-        eventDateTextView = view.findViewById(R.id.eventDateTextView);
-        btnAddToCalendar = view.findViewById(R.id.btnAddToCalendar);
-
-
-        // Получаем список событий, переданный из SecondActivity
-        ArrayList<Event> events = (ArrayList<Event>) getActivity().getIntent().getSerializableExtra("events_list");
+        ArrayList<Event> events = (ArrayList<Event>) getArguments().getSerializable("events_list");
 
         if (events != null && !events.isEmpty()) {
             populateEvents(events);
@@ -55,23 +45,25 @@ public class ThirdActivity extends Fragment {
         for (Event event : events) {
             View eventView = LayoutInflater.from(getContext()).inflate(R.layout.event_item_layout, eventsContainer, false);
 
-            //TextView eventNameTextView = eventView.findViewById(R.id.eventNameTextView);
-            //TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
-            //Button btnAddToCalendar = eventView.findViewById(R.id.btnAddToCalendar);
+            TextView eventNameTextView = eventView.findViewById(R.id.eventNameTextView);
+            TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
+            Button btnAddToCalendar = eventView.findViewById(R.id.btnAddToCalendar);
 
             eventNameTextView.setText(event.getName());
             eventDateTextView.setText("Дата: " + event.getStartsAt());
 
-            // Открытие ссылки на событие
             eventView.setOnClickListener(v -> {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.getUrl()));
                 startActivity(browserIntent);
             });
 
-            // Добавление события в сохраненный список
             btnAddToCalendar.setOnClickListener(v -> {
-                events.add(event);
-                Toast.makeText(getContext(), "Добавлено в календарь: " + event.getName(), Toast.LENGTH_SHORT).show();
+                if (!savedEvents.contains(event)) {
+                    savedEvents.add(event);
+                    Toast.makeText(getContext(), "Добавлено в календарь: " + event.getName(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Событие уже добавлено!", Toast.LENGTH_SHORT).show();
+                }
             });
 
             eventsContainer.addView(eventView);
@@ -84,5 +76,11 @@ public class ThirdActivity extends Fragment {
         emptyMessage.setTextSize(16);
         emptyMessage.setPadding(16, 16, 16, 16);
         eventsContainer.addView(emptyMessage);
+    }
+
+    public void goToSavedEvents() {
+        Intent intent = new Intent(getActivity(), FourthActivity.class);
+        intent.putExtra("saved_events_list", savedEvents);
+        startActivity(intent);
     }
 }
