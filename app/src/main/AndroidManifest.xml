@@ -42,5 +42,11 @@
             tools:ignore="Instantiatable">
         </activity>
 
+        <!-- Контейнер для Третьего Activity -->
+        <activity
+            android:name=".ThirdActivityContainer"
+            android:exported="true">
+        </activity>
+
     </application>
 </manifest>

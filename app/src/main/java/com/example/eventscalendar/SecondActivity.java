@@ -141,11 +141,12 @@ public class SecondActivity extends AppCompatActivity {
 
     private void handleEventsResult(ArrayList<Event> events) {
         if (events != null && !events.isEmpty()) {
-            Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
+            Intent intent = new Intent(SecondActivity.this, ThirdActivityContainer.class);
             intent.putExtra("events_list", events);
             startActivity(intent);
         } else {
             Toast.makeText(SecondActivity.this, "События не найдены", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
