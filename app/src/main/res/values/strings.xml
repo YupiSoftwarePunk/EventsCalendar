@@ -24,4 +24,7 @@
     <string name="SearchEvents">Поиск событий</string>
     <string name="MakeNotification">Создать напоминание</string>
     <string name="NextPage">Перейти на следующую страницу</string>
+    <string name="eventName">Название события</string>
+    <string name="eventData">Дата события</string>
+    <string name="btnAdd">Добавить событие в календарь</string>
 </resources>

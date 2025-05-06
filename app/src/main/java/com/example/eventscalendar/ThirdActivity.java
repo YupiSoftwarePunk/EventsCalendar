@@ -26,14 +26,21 @@ public class ThirdActivity extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.event_list_fragment, container, false);
+
         eventsContainer = view.findViewById(R.id.eventsContainer);
+        if (eventsContainer == null) {
+            Toast.makeText(getContext(), "Ошибка: контейнер событий не найден", Toast.LENGTH_SHORT).show();
+            return view;
+        }
 
-        ArrayList<Event> events = (ArrayList<Event>) getArguments().getSerializable("events_list");
+        if (getArguments() != null) {
+            ArrayList<Event> events = (ArrayList<Event>) getArguments().getSerializable("events_list");
 
-        if (events != null && !events.isEmpty()) {
-            populateEvents(events);
-        } else {
-            showEmptyMessage();
+            if (events != null && !events.isEmpty()) {
+                populateEvents(events);
+            } else {
+                showEmptyMessage();
+            }
         }
 
         return view;
@@ -48,6 +55,11 @@ public class ThirdActivity extends Fragment {
             TextView eventNameTextView = eventView.findViewById(R.id.eventNameTextView);
             TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
             Button btnAddToCalendar = eventView.findViewById(R.id.btnAddToCalendar);
+
+            if (eventNameTextView == null || eventDateTextView == null || btnAddToCalendar == null) {
+                Toast.makeText(getContext(), "Ошибка: элементы представления не найдены", Toast.LENGTH_SHORT).show();
+                continue;
+            }
 
             eventNameTextView.setText(event.getName());
             eventDateTextView.setText("Дата: " + event.getStartsAt());
@@ -71,6 +83,8 @@ public class ThirdActivity extends Fragment {
     }
 
     private void showEmptyMessage() {
+        if (eventsContainer == null) return;
+
         TextView emptyMessage = new TextView(getContext());
         emptyMessage.setText("События не найдены");
         emptyMessage.setTextSize(16);
