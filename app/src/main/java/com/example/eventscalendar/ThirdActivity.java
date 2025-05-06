@@ -26,15 +26,16 @@ public class ThirdActivity extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.event_list_fragment, container, false);
-
         eventsContainer = view.findViewById(R.id.eventsContainer);
+
         if (eventsContainer == null) {
             Toast.makeText(getContext(), "Ошибка: контейнер событий не найден", Toast.LENGTH_SHORT).show();
             return view;
         }
-
-        if (getArguments() != null) {
-            ArrayList<Event> events = (ArrayList<Event>) getArguments().getSerializable("events_list");
+        
+        Bundle arguments = getArguments();
+        if (arguments != null && arguments.containsKey("events_list")) {
+            ArrayList<Event> events = (ArrayList<Event>) arguments.getSerializable("events_list");
 
             if (events != null && !events.isEmpty()) {
                 populateEvents(events);
