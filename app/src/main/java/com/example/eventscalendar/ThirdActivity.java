@@ -52,7 +52,7 @@ public class ThirdActivity extends Fragment {
         eventsContainer.removeAllViews();
 
         for (Event event : events) {
-            View eventView = LayoutInflater.from(getContext()).inflate(R.layout.event_item_layout, eventsContainer, false);
+            View eventView = LayoutInflater.from(getContext()).inflate(R.layout.event_list_fragment, eventsContainer, false);
 
             TextView eventNameTextView = eventView.findViewById(R.id.eventNameTextView);
             TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
