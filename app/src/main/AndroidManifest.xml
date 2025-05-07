@@ -51,9 +51,7 @@
         <!-- Четвертое Activity -->
         <activity
             android:name=".FourthActivity"
-            android:exported="true"
-            tools:ignore="Instantiatable">
-        </activity>
+            android:exported="true"/>
 
     </application>
 </manifest>

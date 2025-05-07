@@ -45,7 +45,8 @@ public class ThirdActivity extends Fragment {
                 showEmptyMessage();
             }
         }
-        
+
+        // Настраиваем кнопку для показа календаря
         btnShowCalendar.setOnClickListener(v -> goToSavedEvents());
 
         return view;

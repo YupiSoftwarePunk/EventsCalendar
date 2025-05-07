@@ -22,9 +22,12 @@ public class FourthActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         eventsTextView = findViewById(R.id.eventsTextView);
 
+        // Получаем список сохранённых событий
         savedEvents = (ArrayList<Event>) getIntent().getSerializableExtra("saved_events_list");
-        
-        showSavedEvents();
+
+        if (savedEvents != null) {
+            showSavedEvents();
+        }
     }
 
     private void showSavedEvents() {
