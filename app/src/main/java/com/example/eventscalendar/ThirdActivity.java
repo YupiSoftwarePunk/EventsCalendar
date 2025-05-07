@@ -20,17 +20,18 @@ import java.util.ArrayList;
 public class ThirdActivity extends Fragment {
 
     private LinearLayout eventsContainer;
+    private Button btnShowCalendar;
     private ArrayList<Event> savedEvents = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.third_activity, container, false);
-
         eventsContainer = view.findViewById(R.id.eventsContainer);
+        btnShowCalendar = view.findViewById(R.id.btnShowCalendar); // Кнопка для показа календаря
 
-        if (eventsContainer == null) {
-            Toast.makeText(getContext(), "Ошибка: проверьте XML-файл third_activity.xml", Toast.LENGTH_SHORT).show();
+        if (eventsContainer == null || btnShowCalendar == null) {
+            Toast.makeText(getContext(), "Ошибка: проверьте XML-файл event_list_fragment.xml", Toast.LENGTH_SHORT).show();
             return view;
         }
 
@@ -44,6 +45,8 @@ public class ThirdActivity extends Fragment {
                 showEmptyMessage();
             }
         }
+        
+        btnShowCalendar.setOnClickListener(v -> goToSavedEvents());
 
         return view;
     }
@@ -59,7 +62,7 @@ public class ThirdActivity extends Fragment {
             Button btnAddToCalendar = eventView.findViewById(R.id.btnAddToCalendar);
 
             if (eventNameTextView == null || eventDateTextView == null || btnAddToCalendar == null) {
-                Toast.makeText(getContext(), "Ошибка: элементы представления не найдены", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Ошибка: проверьте XML-файл event_item_layout.xml", Toast.LENGTH_SHORT).show();
                 continue;
             }
 

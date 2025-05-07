@@ -23,7 +23,7 @@ public class FourthActivity extends AppCompatActivity {
         eventsTextView = findViewById(R.id.eventsTextView);
 
         savedEvents = (ArrayList<Event>) getIntent().getSerializableExtra("saved_events_list");
-
+        
         showSavedEvents();
     }
 
@@ -35,4 +35,3 @@ public class FourthActivity extends AppCompatActivity {
         eventsTextView.setText(eventsText.toString());
     }
 }
-

@@ -40,4 +40,12 @@
         android:text="@string/btnAdd"
         android:layout_marginTop="8dp"
         android:backgroundTint="@android:color/holo_blue_light"/>
+
+    <Button
+        android:id="@+id/btnShowCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Показать календарь событий"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@android:color/holo_green_light"/>
 </LinearLayout>
