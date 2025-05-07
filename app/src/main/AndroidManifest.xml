@@ -48,5 +48,12 @@
             android:exported="true">
         </activity>
 
+        <!-- Четвертое Activity -->
+        <activity
+            android:name=".FourthActivity"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+        </activity>
+
     </application>
 </manifest>

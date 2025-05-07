@@ -27,4 +27,5 @@
     <string name="eventName">Название события</string>
     <string name="eventData">Дата события</string>
     <string name="btnAdd">Добавить событие в календарь</string>
+    <string name="Events">События</string>
 </resources>
