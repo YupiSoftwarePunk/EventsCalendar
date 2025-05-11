@@ -79,8 +79,8 @@ public class SecondActivity extends AppCompatActivity {
         executorService.execute(() -> {
             ArrayList<Event> events = new ArrayList<>();
             String query = theme;
-
             String urlString = API_URL + "?fields=name,url,starts_at,location&limit=10&keywords=" + query + "&city=Екатеринбург";
+
             try {
                 URL url = new URL(urlString);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -88,8 +88,9 @@ public class SecondActivity extends AppCompatActivity {
                 connection.setRequestProperty("Authorization", API_TOKEN);
                 connection.setRequestProperty("Content-Type", "application/json");
 
-                // Проверка ответа сервера
                 int responseCode = connection.getResponseCode();
+                Log.d("API_DEBUG", "Код ответа сервера: " + responseCode);
+
                 if (responseCode != HttpURLConnection.HTTP_OK) {
                     Log.e("API_ERROR", "Ошибка запроса: " + responseCode);
                     handler.post(() -> Toast.makeText(SecondActivity.this, "Ошибка сети: " + responseCode, Toast.LENGTH_SHORT).show());
@@ -106,9 +107,17 @@ public class SecondActivity extends AppCompatActivity {
                 reader.close();
                 connection.disconnect();
 
-                JSONObject jsonResponse = new JSONObject(response.toString());
+                Log.d("API_DEBUG", "Ответ сервера: " + response.toString());
 
-                // Проверка на наличие "values"
+                JSONObject jsonResponse;
+                try {
+                    jsonResponse = new JSONObject(response.toString());
+                } catch (Exception jsonError) {
+                    Log.e("API_ERROR", "Ошибка парсинга JSON: " + jsonError.getMessage(), jsonError);
+                    handler.post(() -> Toast.makeText(SecondActivity.this, "Ошибка обработки данных API", Toast.LENGTH_SHORT).show());
+                    return;
+                }
+
                 if (!jsonResponse.has("values")) {
                     Log.e("API_ERROR", "Ответ не содержит 'values'");
                     handler.post(() -> Toast.makeText(SecondActivity.this, "Ошибка: данные не получены", Toast.LENGTH_SHORT).show());
@@ -133,11 +142,13 @@ public class SecondActivity extends AppCompatActivity {
                 handler.post(() -> handleEventsResult(events));
 
             } catch (Exception e) {
-                Log.e("API_ERROR", "Ошибка при запросе данных", e);
-                handler.post(() -> Toast.makeText(SecondActivity.this, "Ошибка сети", Toast.LENGTH_SHORT).show());
+                Log.e("API_ERROR", "Ошибка при запросе данных: " + e.getMessage(), e);
+                e.printStackTrace();
+                handler.post(() -> Toast.makeText(SecondActivity.this, "Ошибка сети: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
     }
+
 
     private void handleEventsResult(ArrayList<Event> events) {
         if (events != null && !events.isEmpty()) {
