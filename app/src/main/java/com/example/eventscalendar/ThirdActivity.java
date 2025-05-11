@@ -120,11 +120,11 @@ public class ThirdActivity extends Fragment {
     // Метод для определения цвета по теме события
     private String getEventColor(String theme) {
         switch (theme) {
-            case "Концерты": return "#FF0000"; // Красный
-            case "Искусство и культура": return "#FFA500"; // Оранжевый
-            case "Наука": return "#008000"; // Зелёный
-            case "ИТ и интернет": return "#0000FF"; // Синий
-            default: return "#808080"; // Серый для других тем
+            case "Концерты": return "#FF0000";
+            case "Искусство и культура": return "#FFA500";
+            case "Наука": return "#008000";
+            case "ИТ и интернет": return "#0000FF";
+            default: return "#808080";
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.eventscalendar;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.CalendarView;
 import android.widget.TextView;
@@ -10,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -19,8 +19,8 @@ public class FourthActivity extends AppCompatActivity {
 
     private CalendarView calendarView;
     private TextView eventsTextView;
-    private ArrayList<Event> savedEvents;
     private HashMap<Long, String> eventDatesMap = new HashMap<>();
+    private HashMap<Long, String> eventColorsMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,46 +30,44 @@ public class FourthActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         eventsTextView = findViewById(R.id.eventsTextView);
 
-        savedEvents = (ArrayList<Event>) getIntent().getSerializableExtra("saved_events_list");
+        ArrayList<String> eventDates = getIntent().getStringArrayListExtra("event_dates");
+        ArrayList<String> eventColors = getIntent().getStringArrayListExtra("event_colors");
 
-        if (savedEvents != null) {
-            processSavedEvents();
+        if (eventDates != null && eventColors != null) {
+            processSavedEvents(eventDates, eventColors);
         }
 
-        // Показываем события при клике на дату
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             long selectedDate = getDateInMillis(year, month, dayOfMonth);
             if (eventDatesMap.containsKey(selectedDate)) {
                 eventsTextView.setText(eventDatesMap.get(selectedDate));
+                eventsTextView.setTextColor(Color.parseColor(eventColorsMap.get(selectedDate)));
             } else {
                 eventsTextView.setText("Нет событий на выбранную дату");
+                eventsTextView.setTextColor(Color.BLACK);
             }
         });
     }
 
-    private void processSavedEvents() {
+    private void processSavedEvents(ArrayList<String> eventDates, ArrayList<String> eventColors) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        StringBuilder allEventsText = new StringBuilder();
 
-        for (Event event : savedEvents) {
+        for (int i = 0; i < eventDates.size(); i++) {
             try {
-                Date eventDate = format.parse(event.getStartsAt().substring(0, 10));
+                Date eventDate = format.parse(eventDates.get(i).substring(0, 10));
                 if (eventDate != null) {
                     long eventTimeMillis = eventDate.getTime();
-                    eventDatesMap.put(eventTimeMillis, event.getName());
+                    eventDatesMap.put(eventTimeMillis, "Событие на эту дату");
+                    eventColorsMap.put(eventTimeMillis, eventColors.get(i));
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-            allEventsText.append(event.getStartsAt()).append(" - ").append(event.getName()).append("\n");
         }
-
-        eventsTextView.setText(allEventsText.toString());
     }
 
     private long getDateInMillis(int year, int month, int dayOfMonth) {
-        Calendar calendar = Calendar.getInstance();
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
         calendar.set(year, month, dayOfMonth, 0, 0, 0);
         return calendar.getTimeInMillis();
     }
