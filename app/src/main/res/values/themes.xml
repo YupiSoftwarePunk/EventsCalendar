@@ -1,9 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.EventsCalendar" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Theme.EventsCalendar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">#1565C0</item> <!-- Насытенно-синий -->
+        <item name="colorPrimaryVariant">#0D47A1</item> <!-- Тёмно-синий -->
+        <item name="colorOnPrimary">#FFFFFF</item> <!-- Белый текст на кнопках -->
+        <item name="colorSecondary">#42A5F5</item> <!-- Светло-синий -->
+        <item name="colorSurface">#BBDEFB</item> <!-- Голубая поверхность -->
+        <item name="colorOnBackground">#212121</item> <!-- Тёмный текст -->
+        <item name="colorOnSurface">#000000</item>
+        <item name="colorButtonNormal">#1976D2</item> <!-- Цвет кнопок -->
+        <item name="android:windowBackground">#E3F2FD</item> <!-- Цвет фона -->
     </style>
-
-    <style name="Theme.EventsCalendar" parent="Base.Theme.EventsCalendar" />
 </resources>
