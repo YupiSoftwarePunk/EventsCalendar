@@ -101,6 +101,31 @@ public class ThirdActivity extends Fragment {
     public void goToSavedEvents() {
         Intent intent = new Intent(getActivity(), FourthActivity.class);
         intent.putExtra("saved_events_list", savedEvents);
+
+        // Собираем список дат событий
+        ArrayList<String> eventDates = new ArrayList<>();
+        ArrayList<String> eventThemes = new ArrayList<>();
+
+        for (Event event : savedEvents) {
+            eventDates.add(event.getStartsAt()); // Дата события
+            //eventThemes.add(getEventColor(event.getTheme())); // Цвет по теме
+        }
+
+        intent.putStringArrayListExtra("event_dates", eventDates);
+        intent.putStringArrayListExtra("event_colors", eventThemes);
+
         startActivity(intent);
     }
+
+    // Метод для определения цвета по теме события
+    private String getEventColor(String theme) {
+        switch (theme) {
+            case "Концерты": return "#FF0000"; // Красный
+            case "Искусство и культура": return "#FFA500"; // Оранжевый
+            case "Наука": return "#008000"; // Зелёный
+            case "ИТ и интернет": return "#0000FF"; // Синий
+            default: return "#808080"; // Серый для других тем
+        }
+    }
+
 }
