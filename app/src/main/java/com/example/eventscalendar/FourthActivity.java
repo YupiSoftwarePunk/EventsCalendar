@@ -20,7 +20,7 @@ public class FourthActivity extends AppCompatActivity {
     private CalendarView calendarView;
     private TextView eventsTextView;
     private HashMap<Long, String> eventDatesMap = new HashMap<>();
-    private HashMap<Long, String> eventColorsMap = new HashMap<>();
+    private HashMap<Long, Integer> eventColorsMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class FourthActivity extends AppCompatActivity {
             long selectedDate = getDateInMillis(year, month, dayOfMonth);
             if (eventDatesMap.containsKey(selectedDate)) {
                 eventsTextView.setText(eventDatesMap.get(selectedDate));
-                eventsTextView.setTextColor(Color.parseColor(eventColorsMap.get(selectedDate)));
+                eventsTextView.setTextColor(eventColorsMap.get(selectedDate));
             } else {
                 eventsTextView.setText("Нет событий на выбранную дату");
                 eventsTextView.setTextColor(Color.BLACK);
@@ -58,7 +58,10 @@ public class FourthActivity extends AppCompatActivity {
                 if (eventDate != null) {
                     long eventTimeMillis = eventDate.getTime();
                     eventDatesMap.put(eventTimeMillis, "Событие на эту дату");
-                    eventColorsMap.put(eventTimeMillis, eventColors.get(i));
+
+
+                    int color = Color.parseColor(eventColors.get(i));
+                    eventColorsMap.put(eventTimeMillis, color);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();

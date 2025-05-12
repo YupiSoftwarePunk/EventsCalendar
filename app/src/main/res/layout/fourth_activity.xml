@@ -14,8 +14,7 @@
         android:id="@+id/eventsTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Events"
+        android:text="Выберите дату, чтобы увидеть события"
         android:textSize="18sp"
         android:layout_marginTop="16dp"/>
-
 </LinearLayout>

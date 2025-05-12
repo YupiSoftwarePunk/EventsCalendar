@@ -31,7 +31,7 @@ public class ThirdActivity extends Fragment {
         btnShowCalendar = view.findViewById(R.id.btnShowCalendar); // Кнопка для показа календаря
 
         if (eventsContainer == null || btnShowCalendar == null) {
-            Toast.makeText(getContext(), "Ошибка: проверьте XML-файл event_list_fragment.xml", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Ошибка: проверьте XML-файл third_activity.xml", Toast.LENGTH_SHORT).show();
             return view;
         }
 
@@ -46,8 +46,10 @@ public class ThirdActivity extends Fragment {
             }
         }
 
-        // Настраиваем кнопку для показа календаря
-        btnShowCalendar.setOnClickListener(v -> goToSavedEvents());
+        btnShowCalendar.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Открываем календарь событий...", Toast.LENGTH_SHORT).show();
+            goToSavedEvents();
+        });
 
         return view;
     }
@@ -99,32 +101,54 @@ public class ThirdActivity extends Fragment {
     }
 
     public void goToSavedEvents() {
-        Intent intent = new Intent(getActivity(), FourthActivity.class);
-        intent.putExtra("saved_events_list", savedEvents);
+        if (savedEvents.isEmpty()) {
+            Toast.makeText(getContext(), "Нет событий для отображения", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        // Собираем список дат событий
+        Intent intent = new Intent(getActivity(), FourthActivity.class);
         ArrayList<String> eventDates = new ArrayList<>();
-        ArrayList<String> eventThemes = new ArrayList<>();
+        ArrayList<String> eventColors = new ArrayList<>();
 
         for (Event event : savedEvents) {
-            eventDates.add(event.getStartsAt()); // Дата события
-            //eventThemes.add(getEventColor(event.getTheme())); // Цвет по теме
+            eventDates.add(event.getStartsAt());
+            eventColors.add(getEventColor(getTheme(event))); // Теперь цвет передаётся
         }
 
         intent.putStringArrayListExtra("event_dates", eventDates);
-        intent.putStringArrayListExtra("event_colors", eventThemes);
-
+        intent.putStringArrayListExtra("event_colors", eventColors);
         startActivity(intent);
     }
 
-    // Метод для определения цвета по теме события
     private String getEventColor(String theme) {
         switch (theme) {
             case "Концерты": return "#FF0000";
             case "Искусство и культура": return "#FFA500";
             case "Наука": return "#008000";
             case "ИТ и интернет": return "#0000FF";
-            default: return "#808080";
+            default: return "#808080"; // для остальных тем
+        }
+    }
+
+    private String getTheme(Event event) {
+        if (event == null || event.getName() == null) {
+            return "Другое";
+        }
+
+        String name = event.getName().toLowerCase();
+
+        if (name.contains("концерт") || name.contains("музыка")) {
+            return "Концерты";
+        } else if (name.contains("театр") || name.contains("выставка") || name.contains("искусство")) {
+            return "Искусство и культура";
+        } else if (name.contains("наука") || name.contains("лекция") || name.contains("образование")) {
+            return "Наука";
+        } else if (name.contains("спорт") || name.contains("турнир") || name.contains("фитнес")) {
+            return "Спорт";
+        } else if (name.contains("айти") || name.contains("технологии") || name.contains("программирование")) {
+            return "ИТ и интернет";
+        } else {
+            return "Другое";
         }
     }
 
