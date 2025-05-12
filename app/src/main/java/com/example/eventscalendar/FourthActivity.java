@@ -31,6 +31,8 @@ public class FourthActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         eventsTextView = findViewById(R.id.eventsTextView);
 
+        Log.d("DEBUG", "FourthActivity успешно запущен!");
+
         ArrayList<String> eventDates = getIntent().getStringArrayListExtra("event_dates");
         ArrayList<String> eventColors = getIntent().getStringArrayListExtra("event_colors");
 

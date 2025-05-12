@@ -21,41 +21,56 @@ import java.util.ArrayList;
 public class ThirdActivity extends Fragment {
 
     private LinearLayout eventsContainer;
-    private Button btnShowCalendar;
     private ArrayList<Event> savedEvents = new ArrayList<>();
+    private Button btnShowCalendar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.third_activity, container, false);
         eventsContainer = view.findViewById(R.id.eventsContainer);
-        btnShowCalendar = view.findViewById(R.id.btnShowCalendar); // Кнопка для показа календаря
+        btnShowCalendar = view.findViewById(R.id.btnShowCalendar);
 
-        if (eventsContainer == null || btnShowCalendar == null) {
-            Toast.makeText(getContext(), "Ошибка: проверьте XML-файл third_activity.xml", Toast.LENGTH_SHORT).show();
+        if (btnShowCalendar == null) {
+            Toast.makeText(requireActivity(), "Ошибка: btnShowCalendar не найден!", Toast.LENGTH_SHORT).show();
+            Log.e("DEBUG", "Кнопка btnShowCalendar не найдена!");
             return view;
         }
 
-        // Получаем данные через Bundle
+        Log.d("DEBUG", "btnShowCalendar найден, устанавливаем обработчик...");
+
+        if (eventsContainer == null || btnShowCalendar == null) {
+            Toast.makeText(requireActivity(), "Ошибка: проверьте XML-файл third_activity.xml", Toast.LENGTH_SHORT).show();
+            Log.e("DEBUG", "Ошибка: btnShowCalendar или eventsContainer не найдены!");
+            return view;
+        }
+
+        Log.d("DEBUG", "btnShowCalendar найден, устанавливаем обработчик...");
+
+        btnShowCalendar.setOnClickListener(v -> {
+            Toast.makeText(requireActivity(), "Кнопка 'Показать события в календаре' нажата!", Toast.LENGTH_SHORT).show();
+            Log.d("DEBUG", "Кнопка 'Показать события в календаре' нажата.");
+            goToSavedEvents();
+        });
+
+        // Проверяем, получены ли аргументы с событиями
         if (getArguments() != null && getArguments().containsKey("events_list")) {
             ArrayList<Event> events = (ArrayList<Event>) getArguments().getSerializable("events_list");
 
             if (events != null && !events.isEmpty()) {
+                Log.d("DEBUG", "Получены события: " + events.size());
                 populateEvents(events);
             } else {
+                Log.d("DEBUG", "Событий нет, показываем сообщение.");
                 showEmptyMessage();
             }
+        } else {
+            Log.d("DEBUG", "getArguments() == null или нет 'events_list'.");
         }
-
-        btnShowCalendar.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Открываем календарь событий...", Toast.LENGTH_SHORT).show();
-            Log.d("DEBUG", "Кнопка 'Показать события в календаре' нажата.");
-            goToSavedEvents(v);
-        });
-
 
         return view;
     }
+
 
     private void populateEvents(ArrayList<Event> events) {
         eventsContainer.removeAllViews();
@@ -68,7 +83,7 @@ public class ThirdActivity extends Fragment {
             Button btnAddToCalendar = eventView.findViewById(R.id.btnAddToCalendar);
 
             if (eventNameTextView == null || eventDateTextView == null || btnAddToCalendar == null) {
-                Toast.makeText(getContext(), "Ошибка: проверьте XML-файл event_item_layout.xml", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Ошибка: проверьте XML-файл third_activity.xml", Toast.LENGTH_SHORT).show();
                 continue;
             }
 
@@ -103,9 +118,12 @@ public class ThirdActivity extends Fragment {
         eventsContainer.addView(emptyMessage);
     }
 
-    public void goToSavedEvents(View view) {
+    // Метод для показа событий в календаре
+    public void goToSavedEvents() {
+        Log.d("DEBUG", "Метод goToSavedEvents() вызван!");
         if (savedEvents.isEmpty()) {
             Toast.makeText(getContext(), "Нет событий для отображения", Toast.LENGTH_SHORT).show();
+            Log.d("DEBUG", "savedEvents пустой, не переходим в FourthActivity");
             return;
         }
 
@@ -118,13 +136,20 @@ public class ThirdActivity extends Fragment {
             eventColors.add(getEventColor(getTheme(event)));
         }
 
+        Log.d("DEBUG", "Перед запуском FourthActivity: событий - " + eventDates.size());
+
+        if (getActivity() == null) {
+            Log.e("DEBUG", "Ошибка: getActivity() == null");
+            return;
+        }
+
         intent.putStringArrayListExtra("event_dates", eventDates);
         intent.putStringArrayListExtra("event_colors", eventColors);
 
+        Log.d("DEBUG", "Перед запуском FourthActivity...");
         startActivity(intent);
+        Log.d("DEBUG", "FourthActivity должен был запуститься!");
     }
-
-
 
     private String getEventColor(String theme) {
         switch (theme) {
@@ -157,5 +182,4 @@ public class ThirdActivity extends Fragment {
             return "Другое";
         }
     }
-
 }
