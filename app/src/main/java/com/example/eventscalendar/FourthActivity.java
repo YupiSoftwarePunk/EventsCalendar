@@ -2,6 +2,7 @@ package com.example.eventscalendar;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,11 @@ public class FourthActivity extends AppCompatActivity {
 
         ArrayList<String> eventDates = getIntent().getStringArrayListExtra("event_dates");
         ArrayList<String> eventColors = getIntent().getStringArrayListExtra("event_colors");
+
+
+        Log.d("DEBUG", "Получены даты событий: " + (eventDates != null ? eventDates.size() : 0));
+        Log.d("DEBUG", "Получены цвета событий: " + (eventColors != null ? eventColors.size() : 0));
+
 
         if (eventDates != null && eventColors != null) {
             processSavedEvents(eventDates, eventColors);

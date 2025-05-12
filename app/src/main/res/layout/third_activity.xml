@@ -64,7 +64,6 @@
         android:id="@+id/btnShowCalendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Показать календарь событий"
-        android:layout_marginTop="16dp"
+        android:text="Показать события в календаре"
         android:backgroundTint="@android:color/holo_green_light"/>
 </LinearLayout>

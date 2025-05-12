@@ -3,6 +3,7 @@ package com.example.eventscalendar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,10 @@ public class ThirdActivity extends Fragment {
 
         btnShowCalendar.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Открываем календарь событий...", Toast.LENGTH_SHORT).show();
-            goToSavedEvents();
+            Log.d("DEBUG", "Кнопка 'Показать события в календаре' нажата.");
+            goToSavedEvents(v);
         });
+
 
         return view;
     }
@@ -100,7 +103,7 @@ public class ThirdActivity extends Fragment {
         eventsContainer.addView(emptyMessage);
     }
 
-    public void goToSavedEvents() {
+    public void goToSavedEvents(View view) {
         if (savedEvents.isEmpty()) {
             Toast.makeText(getContext(), "Нет событий для отображения", Toast.LENGTH_SHORT).show();
             return;
@@ -112,13 +115,16 @@ public class ThirdActivity extends Fragment {
 
         for (Event event : savedEvents) {
             eventDates.add(event.getStartsAt());
-            eventColors.add(getEventColor(getTheme(event))); // Теперь цвет передаётся
+            eventColors.add(getEventColor(getTheme(event)));
         }
 
         intent.putStringArrayListExtra("event_dates", eventDates);
         intent.putStringArrayListExtra("event_colors", eventColors);
+
         startActivity(intent);
     }
+
+
 
     private String getEventColor(String theme) {
         switch (theme) {

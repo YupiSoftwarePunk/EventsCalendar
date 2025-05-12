@@ -49,8 +49,7 @@
         </activity>
 
         <!-- Четвертое Activity -->
-        <activity
-            android:name=".FourthActivity"
+        <activity android:name=".FourthActivity"
             android:exported="true"/>
 
     </application>
