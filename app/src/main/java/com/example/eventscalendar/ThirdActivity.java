@@ -31,13 +31,6 @@ public class ThirdActivity extends Fragment {
         eventsContainer = view.findViewById(R.id.eventsContainer);
         btnShowCalendar = view.findViewById(R.id.btnShowCalendar);
 
-        if (btnShowCalendar == null) {
-            Toast.makeText(requireActivity(), "Ошибка: btnShowCalendar не найден!", Toast.LENGTH_SHORT).show();
-            Log.e("DEBUG", "Кнопка btnShowCalendar не найдена!");
-            return view;
-        }
-
-        Log.d("DEBUG", "btnShowCalendar найден, устанавливаем обработчик...");
 
         if (eventsContainer == null || btnShowCalendar == null) {
             Toast.makeText(requireActivity(), "Ошибка: проверьте XML-файл third_activity.xml", Toast.LENGTH_SHORT).show();
@@ -45,7 +38,6 @@ public class ThirdActivity extends Fragment {
             return view;
         }
 
-        Log.d("DEBUG", "btnShowCalendar найден, устанавливаем обработчик...");
 
         btnShowCalendar.setOnClickListener(v -> {
             Toast.makeText(requireActivity(), "Кнопка 'Показать события в календаре' нажата!", Toast.LENGTH_SHORT).show();
@@ -136,12 +128,6 @@ public class ThirdActivity extends Fragment {
             eventColors.add(getEventColor(getTheme(event)));
         }
 
-        Log.d("DEBUG", "Перед запуском FourthActivity: событий - " + eventDates.size());
-
-        if (getActivity() == null) {
-            Log.e("DEBUG", "Ошибка: getActivity() == null");
-            return;
-        }
 
         intent.putStringArrayListExtra("event_dates", eventDates);
         intent.putStringArrayListExtra("event_colors", eventColors);
