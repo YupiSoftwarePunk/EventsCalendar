@@ -22,6 +22,7 @@ public class FourthActivity extends AppCompatActivity {
     private TextView eventsTextView;
     private HashMap<Long, String> eventDatesMap = new HashMap<>();
     private HashMap<Long, Integer> eventColorsMap = new HashMap<>();
+    private ThirdActivity thirdActivityInstance = new ThirdActivity(); // Используем экземпляр ThirdActivity для доступа к его методам
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +32,14 @@ public class FourthActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         eventsTextView = findViewById(R.id.eventsTextView);
 
-        Log.d("DEBUG", "FourthActivity успешно запущен!");
-
         ArrayList<String> eventDates = getIntent().getStringArrayListExtra("event_dates");
-        ArrayList<String> eventColors = getIntent().getStringArrayListExtra("event_colors");
-
+        ArrayList<String> eventNames = getIntent().getStringArrayListExtra("event_names"); // Передаём названия событий
 
         Log.d("DEBUG", "Получены даты событий: " + (eventDates != null ? eventDates.size() : 0));
-        Log.d("DEBUG", "Получены цвета событий: " + (eventColors != null ? eventColors.size() : 0));
+        Log.d("DEBUG", "Получены названия событий: " + (eventNames != null ? eventNames.size() : 0));
 
-
-        if (eventDates != null && eventColors != null) {
-            processSavedEvents(eventDates, eventColors);
+        if (eventDates != null && eventNames != null) {
+            processSavedEvents(eventDates, eventNames);
         }
 
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
@@ -55,9 +52,11 @@ public class FourthActivity extends AppCompatActivity {
                 eventsTextView.setTextColor(Color.BLACK);
             }
         });
+
+        Toast.makeText(this, "События добавлены в календарь!", Toast.LENGTH_SHORT).show();
     }
 
-    private void processSavedEvents(ArrayList<String> eventDates, ArrayList<String> eventColors) {
+    private void processSavedEvents(ArrayList<String> eventDates, ArrayList<String> eventNames) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         for (int i = 0; i < eventDates.size(); i++) {
@@ -65,14 +64,14 @@ public class FourthActivity extends AppCompatActivity {
                 Date eventDate = format.parse(eventDates.get(i).substring(0, 10));
                 if (eventDate != null) {
                     long eventTimeMillis = eventDate.getTime();
-                    eventDatesMap.put(eventTimeMillis, "Событие на эту дату");
+                    String theme = thirdActivityInstance.getTheme(new Event(eventNames.get(i), eventDates.get(i))); // Получаем тему события
+                    int color = Color.parseColor(thirdActivityInstance.getEventColor(theme)); // Получаем цвет на основе темы
 
-
-                    int color = Color.parseColor(eventColors.get(i));
+                    eventDatesMap.put(eventTimeMillis, "Событие: " + eventNames.get(i));
                     eventColorsMap.put(eventTimeMillis, color);
                 }
             } catch (ParseException e) {
-                e.printStackTrace();
+                Log.e("DEBUG", "Ошибка при парсинге даты события", e);
             }
         }
     }

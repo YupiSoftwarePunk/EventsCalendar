@@ -17,6 +17,11 @@ public class Event implements Serializable {
         this.address = address;
     }
 
+    public Event(String name, String url) {
+        this.name = name;
+        this.url = url;
+    }
+
     public String getName() {
         return name;
     }

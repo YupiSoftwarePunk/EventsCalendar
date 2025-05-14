@@ -50,7 +50,6 @@ public class ThirdActivity extends Fragment {
                 Log.d("DEBUG", "Получены события: " + events.size());
                 populateEvents(events);
             } else {
-                Log.d("DEBUG", "Событий нет, показываем сообщение.");
                 showEmptyMessage();
             }
         } else {
@@ -86,8 +85,7 @@ public class ThirdActivity extends Fragment {
             });
 
             btnShowCalendar.setOnClickListener(v -> {
-                Toast.makeText(getContext(), "Кнопка 'Показать события в календаре' нажата!", Toast.LENGTH_SHORT).show();
-                Log.d("DEBUG", "Кнопка 'Показать события в календаре' нажата.");
+                Toast.makeText(getContext(), "Запускается показ событий в календаре", Toast.LENGTH_SHORT).show();
                 goToSavedEvents();
             });
 
@@ -116,7 +114,6 @@ public class ThirdActivity extends Fragment {
 
     // Метод для показа событий в календаре
     public void goToSavedEvents() {
-        Log.d("DEBUG", "Метод goToSavedEvents() вызван!");
         if (savedEvents.isEmpty()) {
             Toast.makeText(getContext(), "Нет событий для отображения", Toast.LENGTH_SHORT).show();
             Log.d("DEBUG", "savedEvents пустой, не переходим в FourthActivity");
@@ -136,12 +133,10 @@ public class ThirdActivity extends Fragment {
         intent.putStringArrayListExtra("event_dates", eventDates);
         intent.putStringArrayListExtra("event_colors", eventColors);
 
-        Log.d("DEBUG", "Перед запуском FourthActivity...");
         startActivity(intent);
-        Log.d("DEBUG", "FourthActivity должен был запуститься!");
     }
 
-    private String getEventColor(String theme) {
+    public String getEventColor(String theme) {
         switch (theme) {
             case "Концерты": return "#FF0000";
             case "Искусство и культура": return "#FFA500";
@@ -151,7 +146,7 @@ public class ThirdActivity extends Fragment {
         }
     }
 
-    private String getTheme(Event event) {
+    public String getTheme(Event event) {
         if (event == null || event.getName() == null) {
             return "Другое";
         }
