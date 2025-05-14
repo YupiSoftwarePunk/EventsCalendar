@@ -23,13 +23,14 @@ public class ThirdActivity extends Fragment {
     private LinearLayout eventsContainer;
     private ArrayList<Event> savedEvents = new ArrayList<>();
     private Button btnShowCalendar;
+    View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.third_activity, container, false);
+        view = inflater.inflate(R.layout.third_activity, container, false);
         eventsContainer = view.findViewById(R.id.eventsContainer);
-        btnShowCalendar = view.findViewById(R.id.btnShowCalendar);
+        Button btnShowCalendar = view.findViewById(R.id.btnShowCalendar);
 
 
         if (eventsContainer == null || btnShowCalendar == null) {
@@ -39,11 +40,7 @@ public class ThirdActivity extends Fragment {
         }
 
 
-        btnShowCalendar.setOnClickListener(v -> {
-            Toast.makeText(requireActivity(), "Кнопка 'Показать события в календаре' нажата!", Toast.LENGTH_SHORT).show();
-            Log.d("DEBUG", "Кнопка 'Показать события в календаре' нажата.");
-            goToSavedEvents();
-        });
+
 
         // Проверяем, получены ли аргументы с событиями
         if (getArguments() != null && getArguments().containsKey("events_list")) {
@@ -73,6 +70,7 @@ public class ThirdActivity extends Fragment {
             TextView eventNameTextView = eventView.findViewById(R.id.eventNameTextView);
             TextView eventDateTextView = eventView.findViewById(R.id.eventDateTextView);
             Button btnAddToCalendar = eventView.findViewById(R.id.btnAddToCalendar);
+            Button btnShowCalendar = eventView.findViewById(R.id.btnShowCalendar);
 
             if (eventNameTextView == null || eventDateTextView == null || btnAddToCalendar == null) {
                 Toast.makeText(getContext(), "Ошибка: проверьте XML-файл third_activity.xml", Toast.LENGTH_SHORT).show();
@@ -85,6 +83,12 @@ public class ThirdActivity extends Fragment {
             eventView.setOnClickListener(v -> {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.getUrl()));
                 startActivity(browserIntent);
+            });
+
+            btnShowCalendar.setOnClickListener(v -> {
+                Toast.makeText(getContext(), "Кнопка 'Показать события в календаре' нажата!", Toast.LENGTH_SHORT).show();
+                Log.d("DEBUG", "Кнопка 'Показать события в календаре' нажата.");
+                goToSavedEvents();
             });
 
             btnAddToCalendar.setOnClickListener(v -> {
