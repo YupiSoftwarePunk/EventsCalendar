@@ -123,15 +123,18 @@ public class ThirdActivity extends Fragment {
         Intent intent = new Intent(getActivity(), FourthActivity.class);
         ArrayList<String> eventDates = new ArrayList<>();
         ArrayList<String> eventColors = new ArrayList<>();
+        ArrayList<String> eventNames = new ArrayList<>();
 
         for (Event event : savedEvents) {
             eventDates.add(event.getStartsAt());
             eventColors.add(getEventColor(getTheme(event)));
+            eventNames.add(event.getName());
         }
 
 
         intent.putStringArrayListExtra("event_dates", eventDates);
         intent.putStringArrayListExtra("event_colors", eventColors);
+        intent.putStringArrayListExtra("event_names", eventNames);
 
         startActivity(intent);
     }

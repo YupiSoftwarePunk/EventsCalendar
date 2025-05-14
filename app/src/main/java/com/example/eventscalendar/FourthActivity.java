@@ -33,7 +33,7 @@ public class FourthActivity extends AppCompatActivity {
         eventsTextView = findViewById(R.id.eventsTextView);
 
         ArrayList<String> eventDates = getIntent().getStringArrayListExtra("event_dates");
-        ArrayList<String> eventNames = getIntent().getStringArrayListExtra("event_names"); // Передаём названия событий
+        ArrayList<String> eventNames = getIntent().getStringArrayListExtra("event_names");
 
         Log.d("DEBUG", "Получены даты событий: " + (eventDates != null ? eventDates.size() : 0));
         Log.d("DEBUG", "Получены названия событий: " + (eventNames != null ? eventNames.size() : 0));
@@ -44,6 +44,9 @@ public class FourthActivity extends AppCompatActivity {
 
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             long selectedDate = getDateInMillis(year, month, dayOfMonth);
+
+            selectedDate -= selectedDate % (24 * 60 * 60 * 1000);
+
             if (eventDatesMap.containsKey(selectedDate)) {
                 eventsTextView.setText(eventDatesMap.get(selectedDate));
                 eventsTextView.setTextColor(eventColorsMap.get(selectedDate));
@@ -52,6 +55,9 @@ public class FourthActivity extends AppCompatActivity {
                 eventsTextView.setTextColor(Color.BLACK);
             }
         });
+
+
+
 
         Toast.makeText(this, "События добавлены в календарь!", Toast.LENGTH_SHORT).show();
     }
@@ -69,6 +75,9 @@ public class FourthActivity extends AppCompatActivity {
 
                     eventDatesMap.put(eventTimeMillis, "Событие: " + eventNames.get(i));
                     eventColorsMap.put(eventTimeMillis, color);
+
+                    Log.d("DEBUG", "Обработано событие: " + eventNames.get(i));
+                    calendarView.setDate(eventTimeMillis, true, true);
                 }
             } catch (ParseException e) {
                 Log.e("DEBUG", "Ошибка при парсинге даты события", e);
