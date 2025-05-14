@@ -22,7 +22,7 @@ public class FourthActivity extends AppCompatActivity {
     private TextView eventsTextView;
     private HashMap<Long, String> eventDatesMap = new HashMap<>();
     private HashMap<Long, Integer> eventColorsMap = new HashMap<>();
-    private ThirdActivity thirdActivityInstance = new ThirdActivity(); // Используем экземпляр ThirdActivity для доступа к его методам
+    private ThirdActivity thirdActivityInstance = new ThirdActivity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +70,8 @@ public class FourthActivity extends AppCompatActivity {
                 Date eventDate = format.parse(eventDates.get(i).substring(0, 10));
                 if (eventDate != null) {
                     long eventTimeMillis = eventDate.getTime();
-                    String theme = thirdActivityInstance.getTheme(new Event(eventNames.get(i), eventDates.get(i))); // Получаем тему события
-                    int color = Color.parseColor(thirdActivityInstance.getEventColor(theme)); // Получаем цвет на основе темы
+                    String theme = thirdActivityInstance.getTheme(new Event(eventNames.get(i), eventDates.get(i)));
+                    int color = Color.parseColor(thirdActivityInstance.getEventColor(theme)); 
 
                     eventDatesMap.put(eventTimeMillis, "Событие: " + eventNames.get(i));
                     eventColorsMap.put(eventTimeMillis, color);
