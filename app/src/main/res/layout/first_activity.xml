@@ -16,6 +16,8 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintVertical_bias="0.185" />
 
     <TextView
@@ -28,6 +30,8 @@
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintVertical_bias="0.286" />
 
     <EditText
@@ -39,6 +43,7 @@
         android:hint="@string/login_email"
         app:layout_constraintTop_toBottomOf="@id/textView2"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#808080"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <EditText
@@ -52,6 +57,7 @@
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/etLogin"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#808080"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
@@ -65,17 +71,20 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Поля для регистрации -->
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/registr"
+        android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.616" />
+        app:layout_constraintVertical_bias="0.657" />
 
     <Button
         android:id="@+id/btnRegister"
