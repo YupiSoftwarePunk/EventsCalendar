@@ -1,6 +1,7 @@
 package com.example.eventscalendar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText etLogin, etPassword;
     private Button btnLogin, btnRegister;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,48 +26,49 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String login = etLogin.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
+        sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 
-                if (login.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
-                } else {
-                    loginUser(login, password);
-                }
+        btnLogin.setOnClickListener(v -> {
+            String login = etLogin.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
+
+            if (login.isEmpty() || password.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+            } else {
+                loginUser(login, password);
             }
         });
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String login = etLogin.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
+        btnRegister.setOnClickListener(v -> {
+            String login = etLogin.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
 
-                if (login.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
-                } else {
-                    registerUser(login, password);
-                }
+            if (login.isEmpty() || password.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+            } else {
+                registerUser(login, password);
             }
         });
     }
 
     private void loginUser(String login, String password) {
-        if (login.equals("user") && password.equals("1234")) {
+        String savedLogin = sharedPreferences.getString("login", "");
+        String savedPassword = sharedPreferences.getString("password", "");
+
+        if (login.equals(savedLogin) && password.equals(savedPassword)) {
             Toast.makeText(this, "Вход выполнен успешно", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(MainActivity.this, SecondActivity.class));
-
-            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-            startActivity(intent);
         } else {
             Toast.makeText(this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void registerUser(String login, String password) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("login", login);
+        editor.putString("password", password);
+        editor.apply();
+
         Toast.makeText(this, "Регистрация прошла успешно", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MainActivity.this, SecondActivity.class));
     }
