@@ -64,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerUser(String login, String password) {
+        String savedLogin = sharedPreferences.getString("login", "");
+
+        if (login.equals(savedLogin)) {
+            Toast.makeText(this, "Такой логин уже существует", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("login", login);
         editor.putString("password", password);
