@@ -45,7 +45,7 @@ public class FourthActivity extends AppCompatActivity {
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             long selectedDate = getDateInMillis(year, month, dayOfMonth);
 
-            selectedDate -= selectedDate % (24 * 60 * 60 * 1000);
+            selectedDate -= selectedDate % (1000);
 
             if (eventDatesMap.containsKey(selectedDate)) {
                 eventsTextView.setText(eventDatesMap.get(selectedDate));
